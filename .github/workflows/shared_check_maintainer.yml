@@ -19,7 +19,7 @@ env:
 
 jobs:
   check_maintainer:
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     permissions:
       # We fetch the contents of the MAINTAINERS file
       contents: read
