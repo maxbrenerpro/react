@@ -14,7 +14,7 @@ env:
 
 jobs:
   close_pr:
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     permissions:
       # Used to create a review and close PRs
       pull-requests: write
