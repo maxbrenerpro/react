@@ -36,7 +36,7 @@ jobs:
   # restore the cache. Prevents race conditions where multiple workflows try to write to the cache.
   runtime_node_modules_cache:
     name: Cache Runtime node_modules
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -61,7 +61,7 @@ jobs:
 
   runtime_compiler_node_modules_cache:
     name: Cache Runtime, Compiler node_modules
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -90,7 +90,7 @@ jobs:
   # the build.
   resolve_build_weights:
     name: Resolve build shard weights
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     outputs:
       available: ${{ steps.available.outputs.available }}
     steps:
@@ -117,7 +117,7 @@ jobs:
   # ----- FLOW -----
   discover_flow_inline_configs:
     name: Discover flow inline configs
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     outputs:
       matrix: ${{ steps.set-matrix.outputs.result }}
     steps:
@@ -134,7 +134,7 @@ jobs:
   flow:
     name: Flow check ${{ matrix.flow_inline_config_shortname }}
     needs: [discover_flow_inline_configs, runtime_node_modules_cache]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     strategy:
       fail-fast: false
       matrix:
@@ -164,7 +164,7 @@ jobs:
   check_generated_fizz_runtime:
     name: Confirm generated inline Fizz runtime is up to date
     needs: [runtime_node_modules_cache]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -192,7 +192,7 @@ jobs:
   flags:
     name: Check flags
     needs: [runtime_node_modules_cache]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -217,7 +217,7 @@ jobs:
   test:
     name: yarn test ${{ matrix.params }} (Shard ${{ matrix.shard }})
     needs: [runtime_compiler_node_modules_cache]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     strategy:
       fail-fast: false
       matrix:
@@ -273,7 +273,7 @@ jobs:
 
   test_fizz_flight_node20:
     name: Fizz/Flight on Node 20 (${{ matrix.release_channel }}, ${{ matrix.env }})
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     strategy:
       fail-fast: false
       matrix:
@@ -294,7 +294,7 @@ jobs:
   test-linter:
     name: Test eslint-plugin-react-hooks
     needs: [runtime_compiler_node_modules_cache]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -321,7 +321,7 @@ jobs:
   build_and_lint:
     name: yarn build and lint
     needs: [runtime_compiler_node_modules_cache, resolve_build_weights]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     strategy:
       fail-fast: false
       matrix:
@@ -430,7 +430,7 @@ jobs:
           - 8/10
           - 9/10
           - 10/10
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -482,7 +482,7 @@ jobs:
           - 3/5
           - 4/5
           - 5/5
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -524,7 +524,7 @@ jobs:
       # https://github.com/actions/attest-build-provenance
       id-token: write
       attestations: write
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -614,7 +614,7 @@ jobs:
   check_error_codes:
     name: Search build artifacts for unminified errors
     needs: [build_and_lint, runtime_node_modules_cache]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -734,7 +734,7 @@ jobs:
   run_fixtures_flight_tests:
     name: Run fixtures Flight tests (Node ${{ matrix.node_version }})
     needs: build_and_lint
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     strategy:
       fail-fast: false
       matrix:
@@ -815,7 +815,7 @@ jobs:
   build_devtools_and_process_artifacts:
     name: Build DevTools and process artifacts
     needs: [build_and_lint, runtime_node_modules_cache]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     strategy:
       fail-fast: false
       matrix:
@@ -870,7 +870,7 @@ jobs:
   merge_devtools_artifacts:
     name: Merge DevTools artifacts
     needs: build_devtools_and_process_artifacts
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - name: Merge artifacts
         uses: actions/upload-artifact/merge@v4
@@ -881,7 +881,7 @@ jobs:
   runtime_playwright_chromium_cache:
     name: Cache Runtime Playwright Chromium
     needs: runtime_node_modules_cache
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     outputs:
       playwright_version: ${{ steps.playwright_version.outputs.playwright_version }}
     steps:
@@ -917,7 +917,7 @@ jobs:
   run_devtools_e2e_tests:
     name: Run React DevTools browser extension e2e tests
     needs: [build_and_lint, runtime_playwright_chromium_cache]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -966,7 +966,7 @@ jobs:
   run_react_devtools_cdt_mcp_e2e_tests:
     name: Run react-devtools-cdt-mcp e2e tests
     needs: [build_and_lint, runtime_playwright_chromium_cache]
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
@@ -1029,7 +1029,7 @@ jobs:
       actions: read
       # Used to resolve the merge-base commit through the compare API
       contents: read
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
         with:
