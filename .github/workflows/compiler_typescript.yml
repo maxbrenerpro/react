@@ -26,7 +26,7 @@ defaults:
 jobs:
   discover_yarn_workspaces:
     name: Discover yarn workspaces
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
@@ -37,7 +37,7 @@ jobs:
   # Hardcoded to improve parallelism
   lint:
     name: Lint babel-plugin-react-compiler
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -59,7 +59,7 @@ jobs:
   # Hardcoded to improve parallelism
   jest:
     name: Jest babel-plugin-react-compiler
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -79,7 +79,7 @@ jobs:
   test:
     name: Test ${{ matrix.workspace_name }}
     needs: discover_yarn_workspaces
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     strategy:
       fail-fast: false
       matrix:
