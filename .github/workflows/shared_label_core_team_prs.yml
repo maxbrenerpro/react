@@ -13,7 +13,7 @@ env:
 
 jobs:
   check_access:
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     outputs:
       is_member_or_collaborator: ${{ steps.check_is_member_or_collaborator.outputs.is_member_or_collaborator }}
     steps:
@@ -35,7 +35,7 @@ jobs:
 
   label:
     if: ${{ needs.check_maintainer.outputs.is_core_team == 'true' }}
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     needs: check_maintainer
     permissions:
       # Used to add labels on issues

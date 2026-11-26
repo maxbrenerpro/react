@@ -38,7 +38,7 @@ jobs:
     # `workflow_dispatch` have no pull request to comment on.
     if: ${{ github.event.workflow_run.event == 'pull_request' }}
     name: Comment with size changes
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     permissions:
       # We use github.token to download the sizebot results artifact from the
       # triggering runtime_build_and_test.yml run
