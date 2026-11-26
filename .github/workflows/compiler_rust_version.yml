@@ -17,7 +17,7 @@ concurrency:
 jobs:
   update_version:
     name: Open version bump PR
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     permissions:
       contents: write
       pull-requests: write
