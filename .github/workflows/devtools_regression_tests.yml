@@ -19,7 +19,7 @@ env:
 jobs:
   download_build:
     name: Download base build
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     permissions:
       # We use github.token to download the build artifact from a previous runtime_build_and_test.yml run
       actions: read
@@ -57,7 +57,7 @@ jobs:
   build_devtools_and_process_artifacts:
     name: Build DevTools and process artifacts
     needs: download_build
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -107,7 +107,7 @@ jobs:
   run_devtools_tests_for_versions:
     name: Run DevTools tests for versions
     needs: build_devtools_and_process_artifacts
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     strategy:
       fail-fast: false
       matrix:
@@ -142,7 +142,7 @@ jobs:
   run_devtools_e2e_tests_for_versions:
     name: Run DevTools e2e tests for versions
     needs: build_devtools_and_process_artifacts
-    runs-on: ubuntu-latest
+    runs-on: play-2vcpu
     strategy:
       fail-fast: false
       matrix:
